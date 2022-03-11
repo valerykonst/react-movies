@@ -8,7 +8,6 @@ import { Preloader } from './Preloader';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
-// don't change the Component name "App"
 export default class App extends React.Component {
   
   state = {
@@ -21,15 +20,14 @@ export default class App extends React.Component {
 
     this.setState({movies: false, count: 0, error: ''})
 
-    let url = "http://www.omdbapi.com/?s=" + str + "&type=" + type + "&apikey=" + apiKey
+    let url = "https://www.omdbapi.com/?s=" + str + "&type=" + type + "&apikey=" + apiKey
     fetch(url).then( res => res.json() ).then((result) => {
-      console.log(result)
       if(result.Response === "True")
             this.setState({movies: result.Search, count: result.totalResults, error: ''})
       else
           this.setState({movies: false, count: 0, error: result.Error})
     }).catch((error) => {
-      alert('Connection lost')
+      alert(error)
     })
   }
 
