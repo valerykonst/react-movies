@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import {Header} from './Header'
+import {Search} from './Search'
+import {Movies} from './Movies'
+import {Footer} from './Footer'
+import { Preloader } from './Preloader';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const apiKey = process.env.REACT_APP_API_KEY;
+
+// don't change the Component name "App"
+export default class App extends React.Component {
+  
+  state = {
+    movies: false,
+    count: 0,
+    error: ''
 }
 
-export default App;
+  loadSearch = (str,type) => {
+
+    this.setState({movies: false, count: 0, error: ''})
+
+    let url = "http://www.omdbapi.com/?s=" + str + "&type=" + type + "&apikey=" + apiKey
+    fetch(url).then( res => res.json() ).then((result) => {
+      console.log(result)
+      if(result.Response === "True")
+            this.setState({movies: result.Search, count: result.totalResults, error: ''})
+      else
+          this.setState({movies: false, count: 0, error: result.Error})
+    }).catch((error) => {
+      alert('Connection lost')
+    })
+  }
+
+  componentDidMount() {
+    this.loadSearch("matrix","")
+  }
+
+  
+  render() {
+    const {movies,count,error} = this.state
+    return <>
+      <Header />
+      <main className="container content">
+        <Search loadSearch={this.loadSearch} />
+        {count ? <Movies movies={movies} /> : (error ? <span>Not found</span> : <Preloader />)}
+      </main>
+      <Footer />
+      </>;
+  }
+}

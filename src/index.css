@@ -11,3 +11,31 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+main {padding: 20px 0;}
+
+.nav-wrapper {padding: 0 10px;}
+.search-wrapper {position: relative;}
+.search-wrapper input#search {padding-left: 10px;}
+.search-wrapper button {
+  position: absolute;
+  right: 0;
+  top: 4px;
+}
+.radio-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 20px;
+}
+
+.movies {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(170px,1fr));
+  gap: 20px;
+}
+
+.card .card-image {
+  display: flex;
+  height: 289px;
+  background-color: #f2f2f2;
+}
